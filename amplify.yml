@@ -1,0 +1,16 @@
+# Amplify Hosting — static site at repo root (no build step).
+# Connect this repo in AWS Amplify Console → Hosting → your branch uses this file.
+
+version: 1
+frontend:
+  phases:
+    build:
+      commands:
+        - echo "Static site — no npm build required"
+  artifacts:
+    baseDirectory: .
+    files:
+      - index.html
+      - styles.css
+      - script.js
+      - assets/**/*
