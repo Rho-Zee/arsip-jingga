@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arsip Jingga</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <img class="corner-logo" src="./assets/oj.png" alt="Orange juice box" />
+    <div class="bubble-layer" id="bubbles" aria-hidden="true"></div>
+
+    <main class="content">
+      <div class="center">
+        <h1 class="title">Are you sure you're not lost?</h1>
+        <div class="code-field" role="search">
+          <input
+            class="code-input"
+            type="text"
+            inputmode="text"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+            placeholder="Show me the code"
+            aria-label="Show me the code"
+          />
+          <span class="code-input-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
+              <path
+                d="M9 6l6 6-6 6"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+        </div>
+      </div>
+    </main>
+
+    <script src="./script.js" defer></script>
+  </body>
+</html>

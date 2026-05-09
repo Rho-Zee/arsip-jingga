@@ -1,0 +1,203 @@
+:root {
+  --bg: #f7931a;
+  --bubble: #d86f00;
+  --text: rgba(255, 255, 255, 0.92);
+  --text-dim: rgba(255, 255, 255, 0.78);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  overflow: hidden;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial,
+    "Apple Color Emoji", "Segoe UI Emoji";
+  color: var(--text);
+}
+
+.corner-logo {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  z-index: 2;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Subtle depth without changing the base color too much */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+      1200px 800px at 50% 30%,
+      rgba(255, 255, 255, 0.08),
+      rgba(255, 255, 255, 0) 60%
+    ),
+    radial-gradient(
+      900px 700px at 50% 120%,
+      rgba(0, 0, 0, 0.10),
+      rgba(0, 0, 0, 0) 55%
+    );
+  z-index: -2;
+}
+
+.bubble-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.trail-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.trail-ripple {
+  position: absolute;
+  width: var(--rippleSize, 18px);
+  height: var(--rippleSize, 18px);
+  border-radius: 999px;
+  background: transparent;
+  border: 2.5px solid var(--rippleColor, rgba(255, 176, 0, 0.92));
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
+  opacity: 0;
+  transform: translate3d(-9999px, -9999px, 0) scale(0.35);
+  will-change: transform, opacity;
+  animation: ripple var(--rippleDur, 650ms) ease-out var(--rippleDelay, 0ms) 1;
+}
+
+@keyframes ripple {
+  0% {
+    opacity: var(--rippleAlpha, 0.72);
+    transform: translate3d(var(--rx, 0px), var(--ry, 0px), 0) scale(0.25);
+  }
+  70% {
+    opacity: calc(var(--rippleAlpha, 0.72) * 0.42);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--rx, 0px), var(--ry, 0px), 0)
+      scale(var(--rippleScale, 2.4));
+  }
+}
+
+.bubble {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 999px;
+  opacity: var(--alpha);
+  filter: blur(var(--blur));
+  will-change: transform;
+  background: var(--bubbleColor, var(--bubble));
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.bubble--fruit {
+  border-radius: 0;
+  background-size: contain;
+  background-color: transparent;
+  filter: none;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  text-align: center;
+}
+
+.center {
+  max-width: 70ch;
+}
+
+.title {
+  margin: 0 0 10px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  text-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  color: var(--text-dim);
+  text-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
+}
+
+.code-field {
+  width: min(280px, 92vw);
+  margin: 14px auto 0;
+  position: relative;
+}
+
+.code-input {
+  width: 100%;
+  height: 44px;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.95);
+  padding: 0 46px 0 14px;
+  font-size: 16px;
+  outline: none;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.10);
+  backdrop-filter: blur(6px);
+}
+
+.code-input::placeholder {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.code-input:focus {
+  border-color: rgba(255, 255, 255, 0.62);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.code-input-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.9);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble {
+    animation: none;
+  }
+  .trail-ripple {
+    display: none;
+  }
+}
