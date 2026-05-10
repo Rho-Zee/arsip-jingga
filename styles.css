@@ -290,9 +290,16 @@ body::before {
   margin: 0 0 10px;
   font-weight: 800;
   letter-spacing: -0.02em;
-  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-size: clamp(1.85rem, 4.2vw, 3.35rem);
+  line-height: 1.12;
   text-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
   animation: fadeInUp 0.75s cubic-bezier(0.22, 1, 0.36, 1) 1s both;
+}
+
+@media (min-width: 520px) {
+  .title {
+    white-space: nowrap;
+  }
 }
 
 .subtitle {
