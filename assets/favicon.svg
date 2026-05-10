@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="favOrange" cx="38%" cy="30%" r="72%">
+      <stop offset="0" stop-color="#FFD08A" stop-opacity="0.75"/>
+      <stop offset="0.45" stop-color="#FF8C00"/>
+      <stop offset="1" stop-color="#C85B00"/>
+    </radialGradient>
+  </defs>
+  <!-- Hand-drawn style fruit (wobbly outline, matches floating orange bubble art) -->
+  <path
+    fill="url(#favOrange)"
+    stroke="#9A4A12"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    d="M31 11c2-3 6-4 9-3 4 6 8 6 10 2 8 4 13 12 14 18 2 10 1 18-5 22-7 6-18 6-26 1-9-6-12-17-8-26 3-7 10-11 15-14z"
+  />
+  <!-- Pedicel -->
+  <path
+    fill="none"
+    stroke="#7A4A1A"
+    stroke-width="3"
+    stroke-linecap="round"
+    d="M29 14c1-5 4-8 8-10"
+  />
+  <!-- Leaf -->
+  <path
+    fill="#2F9E44"
+    stroke="#1B6E2C"
+    stroke-width="1.5"
+    stroke-linejoin="round"
+    d="M34 12c6-5 14-6 17-2-5 7-12 9-17 6"
+  />
+</svg>
