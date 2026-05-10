@@ -7,7 +7,21 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <img class="corner-logo" src="./assets/oj.png" alt="Orange juice box" />
+    <div
+      class="corner-logo-wrap"
+      tabindex="0"
+      aria-label="Orange juice box"
+    >
+      <img
+        class="corner-logo"
+        src="./assets/oj.png"
+        alt=""
+        width="44"
+        height="44"
+        aria-hidden="true"
+      />
+      <div class="corner-logo-card" role="tooltip">What is this?</div>
+    </div>
     <div class="bubble-layer" id="bubbles" aria-hidden="true"></div>
 
     <main class="content">
