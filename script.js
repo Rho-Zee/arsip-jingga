@@ -98,7 +98,28 @@ function orangeFruitSvg({ peel = "#FF8C00", peelShade = "#E87400" } = {}) {
 </svg>`;
 }
 
-function initBubbles({ reducedMotion }) {
+function attachFruitMinigameLink(bubbles) {
+  const fruit = bubbles.find((b) => b.el.classList.contains("bubble--fruit"));
+  if (!fruit) return;
+
+  fruit.el.style.pointerEvents = "auto";
+  fruit.el.style.cursor = "pointer";
+  fruit.el.setAttribute("role", "button");
+  fruit.el.setAttribute("aria-label", "Open orange tap mini-game");
+
+  const go = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.href = "./minigame.html";
+  };
+
+  fruit.el.addEventListener("click", go);
+  fruit.el.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") go(e);
+  });
+}
+
+function initBubbles({ reducedMotion, skipFruit = false }) {
   const layer = document.getElementById("bubbles");
   if (!layer) return;
 
@@ -107,8 +128,8 @@ function initBubbles({ reducedMotion }) {
   const w = window.innerWidth;
   const h = window.innerHeight;
 
-  // Exactly one “orange fruit” bubble at a time.
-  const fruitIdx = Math.floor(Math.random() * BUBBLE_COUNT);
+  // Exactly one “orange fruit” bubble at a time (skipped on mini-game page).
+  const fruitIdx = skipFruit ? -1 : Math.floor(Math.random() * BUBBLE_COUNT);
 
   for (let i = 0; i < BUBBLE_COUNT; i++) {
     const el = createBubble({ reducedMotion });
@@ -120,7 +141,7 @@ function initBubbles({ reducedMotion }) {
     const y = rand(0, Math.max(1, h - size));
 
     // Turn exactly one bubble into the orange-fruit drawing.
-    const makeFruit = i === fruitIdx;
+    const makeFruit = fruitIdx >= 0 && i === fruitIdx;
     if (makeFruit) {
       el.classList.add("bubble--fruit");
       el.style.setProperty("--alpha", "1");
@@ -150,6 +171,10 @@ function initBubbles({ reducedMotion }) {
     )}px, 0) rotate(${rot.toFixed(4)}rad)`;
 
     bubbles.push({ el, x, y, vx, vy, size, rot, omega });
+  }
+
+  if (!skipFruit) {
+    attachFruitMinigameLink(bubbles);
   }
 
   if (reducedMotion) return;
@@ -197,6 +222,67 @@ function initBubbles({ reducedMotion }) {
   };
 
   window.requestAnimationFrame(tick);
+}
+
+function getBubblePixelSize(el) {
+  const raw = getComputedStyle(el).getPropertyValue("--size");
+  const n = parseFloat(raw);
+  return Number.isFinite(n) ? n : 72;
+}
+
+function placeOrangeTarget(el) {
+  const size = getBubblePixelSize(el);
+  const hudReserve = 110;
+  const pad = 12;
+  const maxX = Math.max(0, window.innerWidth - size - pad * 2);
+  const maxY = Math.max(0, window.innerHeight - size - pad - hudReserve);
+  const x = rand(pad, pad + maxX);
+  const y = rand(pad, pad + maxY);
+  const rot = rand(-0.45, 0.45);
+  el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(
+    1,
+  )}px, 0) rotate(${rot.toFixed(4)}rad)`;
+}
+
+function initOrangeMinigame() {
+  const scoreEl = document.getElementById("minigame-score-count");
+  const peel = pick(["#FF8C00", "#FF9A1A", "#FF7F11"]);
+  const peelShade = pick(["#E87400", "#D86F00"]);
+
+  const el = document.createElement("div");
+  el.className = "bubble bubble--fruit orange-target";
+  el.style.setProperty("--size", "76px");
+  el.style.setProperty("--alpha", "1");
+  el.style.setProperty("--blur", "0px");
+  el.style.backgroundImage = svgDataUrl(orangeFruitSvg({ peel, peelShade }));
+  el.setAttribute("role", "button");
+  el.setAttribute("aria-label", "Tap the orange");
+  el.tabIndex = 0;
+  document.body.appendChild(el);
+
+  let count = 0;
+
+  const bump = (e) => {
+    e.preventDefault();
+    count += 1;
+    if (scoreEl) scoreEl.textContent = String(count);
+    placeOrangeTarget(el);
+  };
+
+  el.addEventListener("click", bump);
+  el.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") bump(e);
+  });
+
+  placeOrangeTarget(el);
+
+  window.addEventListener(
+    "resize",
+    () => {
+      placeOrangeTarget(el);
+    },
+    { passive: true },
+  );
 }
 
 function createTrailLayer() {
@@ -296,7 +382,16 @@ function init() {
   const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")
     ?.matches;
 
+  const isMinigame = document.body.classList.contains("minigame-page");
+
   initCursorTrail({ reducedMotion: Boolean(reducedMotion) });
+
+  if (isMinigame) {
+    initBubbles({ reducedMotion: Boolean(reducedMotion), skipFruit: true });
+    initOrangeMinigame();
+    return;
+  }
+
   initBubbles({ reducedMotion: Boolean(reducedMotion) });
 }
 

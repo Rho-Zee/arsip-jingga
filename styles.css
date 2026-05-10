@@ -101,6 +101,45 @@ body.info-page {
   overflow-y: auto;
 }
 
+body.minigame-page {
+  overflow: hidden;
+}
+
+.minigame-hud {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  padding: 16px 28px 22px;
+  pointer-events: none;
+}
+
+.minigame-score {
+  margin: 0;
+  font-size: clamp(1.05rem, 2.8vw, 1.35rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.22);
+}
+
+.minigame-score-label {
+  font-weight: 700;
+  opacity: 0.92;
+}
+
+.orange-target {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
 .info-back {
   position: fixed;
   top: 14px;

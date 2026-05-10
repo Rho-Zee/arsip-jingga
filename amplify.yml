@@ -12,6 +12,7 @@ frontend:
     files:
       - index.html
       - info.html
+      - minigame.html
       - styles.css
       - script.js
       - assets/**/*
